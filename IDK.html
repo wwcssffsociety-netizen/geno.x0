@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رسائل متغيرة</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;  /* خلفية سوداء */
+            color: #fff;  /* النص باللون الأبيض */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .message {
+            font-size: 24px;
+            text-align: center;
+            color: #fff;
+            white-space: nowrap;
+        }
+        .blink {
+            animation: blink-animation 1s steps(1) infinite;
+        }
+        @keyframes blink-animation {
+            50% {
+                color: transparent;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="message">
+        <span id="messageText"></span><span class="blink" id="cursor">_</span>
+    </div>
+
+    <script>
+        const messages = [
+            "I'm confused _",
+            "I suffer from psychological problems _",
+            "My future is bad _",
+            "I love hacking but no one understands why I really love it _",
+            "Nobody cares what I do because I use AI to develop malicious tools _"
+        ];
+
+        let messageIndex = 0;
+        let charIndex = 0;
+        const messageText = document.getElementById('messageText');
+        const cursor = document.getElementById('cursor');
+
+        function displayMessage() {
+            if (charIndex < messages[messageIndex].length) {
+                messageText.textContent = messages[messageIndex].substring(0, charIndex + 1);
+                charIndex++;
+                setTimeout(displayMessage, 100);
+            } else {
+                setTimeout(retractMessage, 500); // تبدأ عملية التراجع بعد الانتهاء من كتابة الرسالة
+            }
+        }
+
+        function retractMessage() {
+            if (charIndex > 0) {
+                messageText.textContent = messages[messageIndex].substring(0, charIndex - 1);
+                charIndex--;
+                setTimeout(retractMessage, 100);
+            } else {
+                setTimeout(hideCursor, 500); // أخفاء المؤشر بعد تراجع النص
+            }
+        }
+
+        function hideCursor() {
+            cursor.style.visibility = 'hidden';
+            setTimeout(showCursor, 500); // إظهار المؤشر بعد تأخير
+        }
+
+        function showCursor() {
+            cursor.style.visibility = 'visible';
+            messageIndex = (messageIndex + 1) % messages.length;
+            charIndex = 0;
+            setTimeout(displayMessage, 500); // بدء عرض الرسالة التالية
+        }
+
+        displayMessage(); // بدء عرض أول رسالة
+    </script>
+
+</body>
+</html>
